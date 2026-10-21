@@ -257,6 +257,39 @@ sequenceDiagram
 
 The goal is a project that is easy to change later, not only one that works on demo day. These rules apply from the first line of code.
 
+### Architecture diagram
+
+```mermaid
+flowchart LR
+    subgraph Client[Browser]
+        UI[Vue.js app<br/>Router, Pinia, feature folders]
+    end
+    subgraph API[NestJS API /api/v1]
+        Guards[JWT and role guards]
+        Products[Products module]
+        Sales[Sales module]
+        Stock[Stock module]
+        Alerts[Notifications module]
+        Settings[Settings module]
+        Job[Scheduled task<br/>daily low-stock check]
+    end
+    DB[(PostgreSQL)]
+    UI -->|REST and JWT| Guards
+    Guards --> Products
+    Guards --> Sales
+    Guards --> Alerts
+    Guards --> Settings
+    Sales -->|reduce stock| Stock
+    Products -->|stock adjustment| Stock
+    Stock -.->|stock-changed event| Alerts
+    Job --> Alerts
+    API --> DB
+```
+
+The Vue.js app talks only to the REST API. Guards check the login token and role first. The sales and products modules change stock through the stock module, which emits an event so the notifications module can create low-stock alerts. All modules save data in PostgreSQL.
+
+### Design rules
+
 - **Feature modules in the backend.** NestJS code is split into modules: auth, users, products, sales, stock, notifications, settings. Each has a controller (HTTP only), a service (business rules), and entities (database).
 - **Business rules in services.** Totals, stock checks, and riel rounding live in services, never in controllers or Vue components, so they can be tested and reused.
 - **Events for side effects.** When stock changes, the stock module emits a stock-changed event. The notifications module listens and creates low-stock alerts. New features such as email or reports can listen to the same event without editing the sales code.

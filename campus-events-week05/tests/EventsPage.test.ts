@@ -6,13 +6,23 @@ import { makeRouter } from "../src/router";
 import App from "../src/App.vue";
 import { mockFetch, sampleEvents } from "./helpers";
 
+
 async function mountApp(path = "/") {
-  const router = makeRouter(createMemoryHistory());
+  const pinia = createPinia();
+  const router = makeRouter(createMemoryHistory(), pinia);
+
   router.push(path);
   await router.isReady();
-  const w = mount(App, { global: { plugins: [createPinia(), router] } });
+
+  const w = mount(App, {
+    global: {
+      plugins: [pinia, router],
+    },
+  });
+
   return { w, router };
 }
+
 
 describe("EventsPage (through the whole app)", () => {
   it("shows loading, then the events with links to their detail page", async () => {

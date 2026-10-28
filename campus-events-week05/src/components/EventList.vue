@@ -5,7 +5,9 @@ import { useEventFilters } from "../composables/useEventFilters";
 import EventCard from "./EventCard.vue";
 
 const props = defineProps<{ events: CampusEvent[] }>();
+
 const { search, category, visible } = useEventFilters(toRef(props, "events"));
+
 </script>
 
 <template>

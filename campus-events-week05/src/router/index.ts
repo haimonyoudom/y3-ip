@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, type RouterHistory } from "vue-router";
+import type { Pinia } from "pinia";
 import { useSessionStore } from "../stores/session";
 import EventsPage from "../pages/EventsPage.vue";
 
@@ -40,14 +41,14 @@ export const routes = [
   // Question: why must "/events/new" come before "/events/:id" if :id had no (\\d+)?
 ];
 
-export function makeRouter(history: RouterHistory = createWebHistory()) {
+export function makeRouter(
+  history: RouterHistory = createWebHistory(),
+  pinia: Pinia,
+) {
   const router = createRouter({ history, routes });
 
-  // TODO A2: a global guard (router.beforeEach).
-  // If the route has meta.organiserOnly and the session is not an organiser,
-  // redirect to { name: "events", query: { denied: "1" } }.
   router.beforeEach((to) => {
-    const session = useSessionStore();
+    const session = useSessionStore(pinia);
 
     if (to.meta.organiserOnly && !session.isOrganiser) {
       return {

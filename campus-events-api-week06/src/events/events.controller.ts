@@ -30,11 +30,25 @@ export class EventsController {
     return this.events.findOne(id);
   }
 
+
   // TODO B4: three more routes, each calling the service:
   //   POST   /events       body: CreateEventDto      -> 201 and the new event (201 is the default for @Post)
+  @Post()
+  create(@Body() dto: CreateEventDto) {
+    return this.events.create(dto);
+  }
   //   PATCH  /events/:id   body: UpdateEventDto      -> 200 and the updated event
+  @Patch(':id')
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateEventDto) {
+    return this.events.update(id, dto);
+  }
   //   DELETE /events/:id                             -> 204 and no body (@HttpCode(204))
+  @Delete(':id')
+  @HttpCode(204)
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.events.remove(id);
+  }
+
   // Use ParseIntPipe on :id, like findOne above.
 }
 
-void [Body, Delete, HttpCode, Patch, Post, CreateEventDto, UpdateEventDto];

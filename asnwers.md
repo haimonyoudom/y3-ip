@@ -1,4 +1,3 @@
-
 # Week 06 Answers
 
 ### 1. HTTP DELETE Idempotency
@@ -20,3 +19,5 @@ The line `forbidNonWhitelisted: true` in `src/setup.ts` inside `new ValidationPi
 ### 5. Domain Logic Layer Placement
 
 Business rules like "not enough seats" belong in `BookingsService` because it acts as the central source of truth for core application logic across all entry points. Placing this check only in the Vue form allows clients to bypass validation by sending raw HTTP requests directly to the API. Keeping it out of `BookingsController` ensures the rule remains reusable across different controllers, CLI tools, or background queues without duplicating validation logic.
+
+cke

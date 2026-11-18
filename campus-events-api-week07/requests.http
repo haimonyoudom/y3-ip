@@ -6,7 +6,7 @@
 GET {{api}}/events?category=workshop
 
 ### One event
-GET {{api}}/events/2
+GET {{api}}/events/8
 
 ### Create an event
 POST {{api}}/events

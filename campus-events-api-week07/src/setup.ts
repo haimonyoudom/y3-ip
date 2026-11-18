@@ -11,5 +11,5 @@ export function configureApp(app: INestApplication) {
     }),
   );
   // Allow the Vue dev server to call this API from the browser (lecture: CORS)
-  app.enableCors({ origin: process.env.WEB_ORIGIN ?? 'http://localhost:5173' });
+  app.enableCors({ origin: process.env.WEB_ORIGIN ?? 'http://127.0.0.1:5173', credentials: true });
 }

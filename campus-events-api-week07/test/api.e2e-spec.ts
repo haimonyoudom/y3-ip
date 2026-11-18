@@ -142,6 +142,6 @@ describe('Campus Events API (e2e)', () => {
   it('allows the Vue dev server origin (CORS)', () =>
     http
       .get('/events')
-      .set('Origin', 'http://localhost:5173')
-      .expect('Access-Control-Allow-Origin', 'http://localhost:5173'));
+      .set('Origin', 'http://127.0.0.1:5173')
+      .expect('Access-Control-Allow-Origin', 'http://127.0.0.1:5173'));
 });
